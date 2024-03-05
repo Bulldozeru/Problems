@@ -23,7 +23,7 @@ vector<int> treeck(string pwd) {
     vector<int> serie;
 
     for(int n = 0; n < pwd.size() - 2; n++) {
-        if(pwd[n] = pwd[n+1] = pwd[n+2]) {
+        if(pwd[n] == pwd[n+1] && pwd[n+1] == pwd[n+2]) {
             serie.push_back(n);
         }
     }
@@ -38,14 +38,14 @@ string symb(string pwd) {
     string lower {"abcdefghijklmnopqrstuvwxyz"};
     string digits{"0123456789"};
     string symbols {"`~!@#$%^&*()-=_+/|,./;':<>?"+ 0x5C + 0x22};
-    string res = "";
-    int lw,up,dt,sy;
+    string miss = "lcds";
 
     for(int l = 0; l < 27; l++) {
 
         auto src = pwd.find(lower[l]);
         if(src != std::string::npos) { 
-            lw = 1; 
+            auto look = miss.find('l');
+            miss.erase(look, 1); 
             break;
         }
     }
@@ -53,7 +53,8 @@ string symb(string pwd) {
 
         auto src = pwd.find(upper[l]);
         if(src != std::string::npos) { 
-            up = 1; 
+            auto look = miss.find('c');
+            miss.erase(look, 1); 
             break;
         }
     }
@@ -61,7 +62,8 @@ string symb(string pwd) {
 
         auto src = pwd.find(digits[l]);
         if(src != std::string::npos) { 
-            dt = 1; 
+            auto look = miss.find('d');
+            miss.erase(look, 1); 
             break;
         }
     }
@@ -69,17 +71,13 @@ string symb(string pwd) {
 
         auto src = pwd.find(symbols[l]);
         if(src != std::string::npos) { 
-            sy = 1; 
+            auto look = miss.find('s');
+            miss.erase(look, 1); 
             break;
         }
     }
 
-    if(lw == 0) { res = "lw"; }
-    if(up == 0) { res = "up"; }
-    if(dt == 0) { res = "dt"; }
-    if(sy == 0) { res = "sy"; }
-
-    return res;
+    return miss;
 }
 
 /*
@@ -89,9 +87,9 @@ vector container type char with
 string is desired options and int is the length of generation
 */
 
-vector<char> generator(string opt, int len) {
+vector<char> chargen(string opt) {
 
-    char str = 'l';
+    char low = 'l';
     char cap = 'c';
     char dgt = 'd';
     char sym = 's';
@@ -99,35 +97,33 @@ vector<char> generator(string opt, int len) {
     string lower {"abcdefghijklmnopqrstuvwxyz"};
     string upper {"ABCDEFGHIJKLMNOPQRSTUVWXYZ"};
     string digits{"0123456789"};
-    string symbols {"`~!@#$%^&*()-=_+/|,./;':<>?"+ 0x5C + 0x22};
+    string symbols {"`~!@#$%^&*()-=_+/|,./;':<>?"};
 
-    char opt[3] {0};
     vector<char> numb;
     random_device rand;
     mt19937 gen(rand());    
 
-
-    for(int l = 0; l < len; l++) {
+    for(int l = 0; l < opt.size(); l++) {
     
-        if(opt[l] = 'l') {
+        if(opt[l] == low) {
         
-            uniform_int_distribution<>dis(0,26);    
-            numb.push_back(lower.at(dis(gen)));     
+            uniform_int_distribution<>dis(0,25);    
+            numb.push_back(lower[dis(gen)]);     
         }
-        else if(opt[l] = 'c') {
+        else if(opt[l] == cap) {
 
-            uniform_int_distribution<>dis(0,26);
-            numb.push_back(upper.at(dis(gen)));
+            uniform_int_distribution<>dis(0,25);
+            numb.push_back(upper[dis(gen)]);
         }
-        else if(opt[l] = 's') {
+        else if(opt[l] == sym) {
 
             uniform_int_distribution<>dis(0,29);
-            numb.push_back(symbols.at(dis(gen))); 
+            numb.push_back(symbols[dis(gen)]); 
         }
-        else if(opt[l] = 'd') {
+        else if(opt[l] == dgt) {
 
-            uniform_int_distribution<>dis(0,10);
-            numb.push_back(digits.at(dis(gen)));
+            uniform_int_distribution<>dis(0,9);
+            numb.push_back(digits[dis(gen)]);
         }
         else { continue; }
 
@@ -137,7 +133,7 @@ vector<char> generator(string opt, int len) {
 
 }
 
-string showChkr(string pwd) {
+int showChkr(string pwd) {
 
     int steps = 0;
     int ln = length(pwd);
@@ -147,6 +143,7 @@ string showChkr(string pwd) {
     if(ln != 0) { steps++; }
     if(syck != "") { steps += syck.size() / 2; }
     if(tree.size() > 0) { steps += tree.size(); }
+    return steps;
 }
 
 int identifyr(string sus) {
@@ -156,9 +153,9 @@ int identifyr(string sus) {
     string digits{"0123456789"};
     string symbols {"`~!@#$%^&*()-=_+/|,./;':<>?"+ 0x5C + 0x22};
 
-    if(sus.compare(0, 26, lower)) { return 0;}
-    else if (sus.compare(0, 26, upper)) { return 1;}
-    else if (sus.compare(0, 10, digits)) { return 2;}
+    if(lower.find(sus[0]) != std::string::npos) { return 0;}
+    else if (upper.find(sus[0]) != std::string::npos) { return 1;}
+    else if (digits.find(sus[0]) != std::string::npos) { return 2;}
     else {return 3;} 
     
 }
@@ -186,7 +183,7 @@ string modder(string pwd) {
 
     if(ln < 6 && ln > 0 && symbChk != "") {
         
-        gene = generator(symbChk, ln);
+        gene = chargen(symbChk);
         
         for(int l = 0; l < gene.size(); l++) { wrkpwd += gene[l]; }
     }
@@ -200,7 +197,7 @@ string modder(string pwd) {
 
     for(int p = 0; p < pos.size(); p++) {
 
-        vector<char> gen = generator("lcds", 4); // s / c // l / d        
+        vector<char> gen = chargen("lcds"); // s / c // l / d        
         gen.erase(gen.begin() + identifyr(to_string(wrkpwd[p]))); // l // s 1 // 4 
         gen.erase(gen.begin() + identifyr(to_string(wrkpwd[p+1]))); // d // c 3 // 2 
         wrkpwd.erase(p);
@@ -211,6 +208,37 @@ string modder(string pwd) {
 }
 
 int main() {
+
+    string tstle = "As1)"; // 2
+    string tstse = "!0ngpw"; // 1
+    string tst3e = "P4sss$"; // 1
+    string tstfe = "nnn"; // 4
+    string tstgp = "P4$$wd"; // 0
+
+    int show1 = showChkr(tstle);
+    int show2 = showChkr(tstse);
+    int show3 = showChkr(tst3e);
+    int show4 = showChkr(tstfe);
+    int show5 = showChkr(tstgp);
+
+    string pwd1 = modder(tstle);
+    string pwd2 = modder(tstse);
+    string pwd3 = modder(tst3e);
+    string pwd4 = modder(tstfe);
+    string pwd5 = modder(tstgp);
+
+    cout << "[*] TESTING PASSWORDS FOR STRENGTH AGAINST BRUTEFORCE...\n";
+    cout << "[?] Password: " << tstle << " :: Imporvements: "
+    << show1 << endl << "   Suggested: " << pwd1;
+    cout << "[?] Password: " << tstse << " :: Imporvements: "
+    << show2 << endl << "   Suggested: " << pwd2;
+    cout << "[?] Password: " << tst3e << " :: Imporvements: "
+    << show3 << endl << "   Suggested: " << pwd3;
+    cout << "[?] Password: " << tstfe << " :: Imporvements: "
+    << show4 << endl << "   Suggested: " << pwd4;
+    cout << "[?] Password: " << tstgp << " :: Imporvements: "
+    << show5 << endl << "   Suggested: " << pwd5;
+
 
     // Set a passwd
     // Then runn it with moder
