@@ -1,12 +1,10 @@
 #include <iostream>
 #include <vector>
 #include <string.h>
-#include <random>     
-#include <ctime>
-// #include <dictionary.h>
+#include <random>       
+#include <time.h>
 
 using namespace std;
-
 string lower {"abcdefghijklmnopqrstuvwxyz"};
 string upper {"ABCDEFGHIJKLMNOPQRSTUVWXYZ"};
 string digits{"0123456789"};
@@ -19,10 +17,6 @@ char sym = 's';
 
 string symb(string pwd) { 
 
-    string upper {"ABCDEFGHIJKLMNOPQRSTUVWXYZ"};
-    string lower {"abcdefghijklmnopqrstuvwxyz"};
-    string digits{"0123456789"};
-    string symbols {"`~!@#$%^&*()-=_+/|,./;':<>?"};
     string miss = "lcds";
 
     for(int l = 0; l < 27; l++) {
@@ -82,11 +76,6 @@ int length(string pwd) {
 
 int identifyr(string sus) {
 
-    string upper {"ABCDEFGHIJKLMNOPQRSTUVWXYZ"};
-    string lower {"abcdefghijklmnopqrstuvwxyz"};
-    string digits{"0123456789"};
-    string symbols {"`~!@#$%^&*()-=_+/|,./;':<>?"};
-
     if(lower.find(sus[0]) != std::string::npos) { return 0;}
     if (upper.find(sus[0]) != std::string::npos) { return 1;}
     if (digits.find(sus[0]) != std::string::npos) { return 2;}
@@ -94,6 +83,34 @@ int identifyr(string sus) {
 
     return 0;
     
+}
+
+vector<int> treeck(string pwd) {
+
+    vector<int> serie;
+
+    for(int n = 0; n < pwd.size() - 2; n++) {
+        if(pwd[n] == pwd[n+1] && pwd[n+1] == pwd[n+2]) {
+            serie.push_back(n);
+        }
+    }
+    
+    return serie;
+    
+}
+
+int showChkr(string pwd) {
+
+    int steps = 0;
+    int ln = length(pwd);
+    string syck = symb(pwd);
+    vector<int> tree = treeck(pwd);
+    
+    if(ln > 0) { steps+ln; }
+    if(ln < 0) {steps - ln; }
+    if(syck != "") { steps += syck.size(); }
+    if(tree.size() > 0) { steps += tree.size(); }
+    return steps;
 }
 
 vector<char> characterGenType(string opt) {
@@ -166,7 +183,6 @@ vector<char> characterGenSz(char opt, int sz) {
 
 }
 
-
 /*
 vector<char> chargen(string opt) {
 
@@ -214,19 +230,7 @@ vector<char> chargen(string opt) {
 
 }
 */
-vector<int> treeck(string pwd) {
 
-    vector<int> serie;
-
-    for(int n = 0; n < pwd.size() - 2; n++) {
-        if(pwd[n] == pwd[n+1] && pwd[n+1] == pwd[n+2]) {
-            serie.push_back(n);
-        }
-    }
-    
-    return serie;
-    
-}
 
 int picker(int n1, int n2) {
 
@@ -291,34 +295,42 @@ string modder(string pwd) {
     return wrkpwd;
 }
 
-
-
 int main() {
-/*
-    string mod1 = modder("A~1r");
-    string mod2 = modder("aslr");
-    string mod3 = modder("Aslr");
-    string mod4 = modder("A5lr");
-    string mod5 = modder("a~lr");
-    
-    string mod6 = modder("A5|_r");
-    string mod7 = modder("L06!cC++"); */
-    string mod8 = modder("TooMu<hL3nghtasdasdasdasdadadadadasdadadadasdasdaasdasd"); 
-    string mod9 = modder("&*^%(%(^&%*&%#@)*&^$)@#_(*&_!#(*#_(*&@_(*#&_%(*&@#$%)))");
-    string mod0 = modder("P4$$wdSec");
-/*
-    cout << mod1 << endl;
-    cout << mod2 << endl;
-    cout << mod3 << endl;
-    cout << mod4 << endl;
-    cout << mod5 << endl;
 
-    cout << mod6 << endl;
-    cout << mod7 << endl; */
+    string tstle = "As1)"; // 2
+    string tstse = "!0ngpw"; // 1
+    string tst3e = "P4sss$"; // 1
+    string tstfe = "nnn"; // 4
+    string tstgp = "P4$$wd"; // 0
 
-    cout << mod8 << endl;
-    cout << mod9 << endl;
-    cout << mod0 << endl;
+    int show1 = showChkr(tstle);
+    int show2 = showChkr(tstse);
+    int show3 = showChkr(tst3e);
+    int show4 = showChkr(tstfe);
+    int show5 = showChkr(tstgp);
+
+    string pwd1 = modder(tstle);
+    string pwd2 = modder(tstse);
+    string pwd3 = modder(tst3e);
+    string pwd4 = modder(tstfe);
+    string pwd5 = modder(tstgp);
+
+    cout << "[*] TESTING PASSWORDS FOR STRENGTH AGAINST BRUTEFORCE...\n";
+    cout << "[?] Password: " << tstle << " :: Imporvements: "
+    << show1 << endl << "   Suggested: " << pwd1 << endl;
+    cout << "[?] Password: " << tstse << " :: Imporvements: "
+    << show2 << endl << "   Suggested: " << pwd2 << endl;
+    cout << "[?] Password: " << tst3e << " :: Imporvements: "
+    << show3 << endl << "   Suggested: " << pwd3 << endl;
+    cout << "[?] Password: " << tstfe << " :: Imporvements: "
+    << show4 << endl << "   Suggested: " << pwd4 << endl;
+    cout << "[?] Password: " << tstgp << " :: Imporvements: "
+    << show5 << endl << "   Suggested: " << pwd5 << endl;
+
+
+    // Set a passwd
+    // Then runn it with moder
+    // Do some user-friendly shit ;)
 
     return 0;
 }
