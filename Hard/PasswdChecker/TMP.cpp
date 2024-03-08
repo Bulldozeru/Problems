@@ -183,55 +183,6 @@ vector<char> characterGenSz(char opt, int sz) {
 
 }
 
-/*
-vector<char> chargen(string opt) {
-
-    char low = 'l';
-    char cap = 'c';
-    char dgt = 'd';
-    char sym = 's';
-
-    string lower {"abcdefghijklmnopqrstuvwxyz"};
-    string upper {"ABCDEFGHIJKLMNOPQRSTUVWXYZ"};
-    string digits{"0123456789"};
-    string symbols {"`~!@#$%^&*()-=_+/|,./;':<>?"};
-
-    vector<char> numb;
-    random_device rand;
-    mt19937 gen(rand());
-
-    for(int l = 0; l < opt.size(); l++) {
-    
-        if(opt[l] == low) {
-        
-            uniform_int_distribution<>dis(0,25);    
-            numb.push_back(lower[dis(gen)]);     
-        }
-        else if(opt[l] == cap) {
-
-            uniform_int_distribution<>dis(0,25);
-            numb.push_back(upper[dis(gen)]);
-        }
-        else if(opt[l] == sym) {
-
-            uniform_int_distribution<>dis(0,27);
-            numb.push_back(symbols[dis(gen)]); 
-        }
-        else if(opt[l] == dgt) {
-
-            uniform_int_distribution<>dis(0,9);
-            numb.push_back(digits[dis(gen)]);
-        }
-        else { continue; }
-
-    }
-
-    return numb;
-
-}
-*/
-
-
 int picker(int n1, int n2) {
 
     time_t now = time(0);
