@@ -4,4 +4,6 @@ I didn't tried to make it perfect or usable in a real environment. Just to make 
 but to understand more about rocket science. Here is the same story, I tried to learn and understand more about programming. I have little to 0 experience in C++, but I did my best
 Any constructive cricism is wellcome as soon is civilized :)
 
+The program work partially because it gives more steps than it should. Let say you pass AA to program it will output 7 instead of 4. But other than this, I didn't found any errors  
+
 Thanks
